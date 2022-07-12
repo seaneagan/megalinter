@@ -31,6 +31,10 @@ linters:
           RUN curl -sLO https://raw.githubusercontent.com/clj-kondo/clj-kondo/master/script/install-clj-kondo \
               && chmod +x install-clj-kondo \
               && ./install-clj-kondo
+    supported_platforms:
+      platform:
+        - linux/amd64
+        - windows/amd64
     ide:
       atom:
         - name: linter-kondo
