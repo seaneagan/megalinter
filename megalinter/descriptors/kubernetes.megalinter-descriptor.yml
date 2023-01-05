@@ -27,11 +27,6 @@ linters:
     version_extract_regex: "((\\d+(\\.\\d+)+)|(dev))"
     examples:
       - "kubeval -strict myfile.yml"
-    supported_platforms:
-      platform:
-        - linux/amd64
-        - linux/386
-        - windows/amd64
     install:
       dockerfile:
         - |
@@ -42,6 +37,9 @@ linters:
               && mv ${ML_THIRD_PARTY_DIR}/kubeval /usr/local/bin \
               && rm ${ML_THIRD_PARTY_DIR}/kubeval-linux-amd64.tar.gz \
               && find ${ML_THIRD_PARTY_DIR} -type f -not -name 'LICENSE*' -delete -o -type d -empty -delete
+    supported_platforms:
+      platform:
+        - linux/amd64
   # KUBECONFORM
   - linter_name: kubeconform
     name: KUBERNETES_KUBECONFORM
@@ -64,13 +62,6 @@ linters:
     examples:
       - kubeconform myfile.yml
       - kubeconform -ignore-missing-schemas -skip SomeCRD,AnotherCRD -kubernetes-version '1.18.0' -strict myfile.yml
-    supported_platforms:
-      platform:
-        - linux/amd64
-        - linux/arm64
-        - linux/arm/v6
-        - linux/386
-        - windows/amd64
     install:
       dockerfile:
         - |
@@ -82,7 +73,10 @@ linters:
               && mv ${ML_THIRD_PARTY_DIR}/kubeconform /usr/local/bin \
               && rm ${ML_THIRD_PARTY_DIR}/kubeconform-linux-amd64.tar.gz \
               && find ${ML_THIRD_PARTY_DIR} -type f -not -name 'LICENSE*' -delete -o -type d -empty -delete
-
+    supported_platforms:
+      platform:
+        - linux/amd64
+        - linux/arm64
   # HELM LINT
   - linter_name: helm
     name: KUBERNETES_HELM
@@ -107,3 +101,7 @@ linters:
     install:
       apk:
         - helm
+    supported_platforms:
+      platform:
+        - linux/amd64
+        - linux/arm64
