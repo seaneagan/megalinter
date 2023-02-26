@@ -1,3 +1,4 @@
+---
 rules:
   # id, pattern, message are required attributes.
   - id: example.github
