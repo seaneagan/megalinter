@@ -23,11 +23,9 @@ linters:
     help_command_return_code: 2
     examples:
       - "misspell myfile.any"
-    supported_platforms:
-      platform:
-        - linux/amd64
     install:
       dockerfile:
+        - ARG TARGETPLATFORM
         - |
           RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
                    ML_THIRD_PARTY_DIR="/third-party/misspell" \
@@ -37,6 +35,9 @@ linters:
                    && find ${ML_THIRD_PARTY_DIR} -type f -not -name 'LICENSE*' -delete -o -type d -empty -delete \
                    && find /tmp -path '/tmp/tmp.*' -type f -name 'misspell*' -delete -o -type d -empty -delete; \
               fi
+    supported_platforms:
+      platform:
+        - linux/amd64
   # CSPELL
   - class: CSpellLinter
     linter_name: cspell
@@ -64,13 +65,13 @@ linters:
     examples:
       - "cspell myfile.any"
       - "cspell -c cspell.json myfile.any"
+    install:
+      npm:
+        - "cspell"
     supported_platforms:
       platform:
         - linux/amd64
         - linux/arm64
-    install:
-      npm:
-        - "cspell"
     ide:
       vscode:
         - name: Code Spell Checker
@@ -103,6 +104,10 @@ linters:
     install:
       pip:
         - proselint
+    supported_platforms:
+      platform:
+        - linux/amd64
+        - linux/arm64
     ide:
       atom:
         - name: linter-proselint

@@ -22,13 +22,13 @@ FROM mvdan/shfmt:latest-alpine as shfmt
 FROM hadolint/hadolint:v2.12.0-alpine as hadolint
 FROM mstruebing/editorconfig-checker:2.7.0 as editorconfig-checker
 FROM yoheimuta/protolint:latest as protolint
-FROM zricethezav/gitleaks:v8.16.2 as gitleaks
+FROM zricethezav/gitleaks:v8.16.1 as gitleaks
 #FROM__END
 
 ##################
 # Get base image #
 ##################
-FROM python:3.11.3-alpine3.17
+FROM python:3.11.2-alpine3.17
 ARG GITHUB_TOKEN
 
 #############################################################################################
@@ -148,11 +148,9 @@ RUN npm --no-cache install --ignore-scripts --omit=dev \
                 cspell \
                 sql-lint \
                 tekton-lint  && \
-    echo "Cleaning npm cache..." \
+       npm audit fix --audit-level=critical || true \
     && npm cache clean --force || true \
-    && echo "Changing owner of node_modules files..." \
     && chown -R "$(id -u)":"$(id -g)" node_modules # fix for https://github.com/npm/cli/issues/5900 \
-    && echo "Removing extra node_module files..." \
     && rm -rf /root/.npm/_cacache \
     && find . -name "*.d.ts" -delete \
     && find . -name "*.map" -delete \
@@ -226,8 +224,6 @@ COPY --link --from=gitleaks /usr/bin/gitleaks /usr/bin/
 ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk
 ENV PATH="$JAVA_HOME/bin:${PATH}"
 RUN echo y|sfdx plugins:install sfdx-hardis \
-    && npm cache clean --force || true \
-    && rm -rf /root/.npm/_cacache \
 
 # actionlint installation
 # Managed with COPY --link --from=actionlint /usr/local/bin/actionlint /usr/bin/actionlint
@@ -260,22 +256,29 @@ RUN echo y|sfdx plugins:install sfdx-hardis \
     mv "ktlint" /usr/bin/ \
 
 # kubeval installation
+    && case ${TARGETPLATFORM} in \
+      "linux/amd64")   KUBEVAL_ARCH=linux-amd64   ;; \
+    esac \
     && ML_THIRD_PARTY_DIR="/third-party/kubeval" \
     && mkdir -p ${ML_THIRD_PARTY_DIR} \
-    && wget -P ${ML_THIRD_PARTY_DIR} -q https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz \
-    && tar xf ${ML_THIRD_PARTY_DIR}/kubeval-linux-amd64.tar.gz --directory ${ML_THIRD_PARTY_DIR} \
+    && wget -P ${ML_THIRD_PARTY_DIR} -q https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-${KUBEVAL_ARCH}.tar.gz \
+    && tar xf ${ML_THIRD_PARTY_DIR}/kubeval-${KUBEVAL_ARCH}.tar.gz --directory ${ML_THIRD_PARTY_DIR} \
     && mv ${ML_THIRD_PARTY_DIR}/kubeval /usr/local/bin \
-    && rm ${ML_THIRD_PARTY_DIR}/kubeval-linux-amd64.tar.gz \
+    && rm ${ML_THIRD_PARTY_DIR}/kubeval-${KUBEVAL_ARCH}.tar.gz \
     && find ${ML_THIRD_PARTY_DIR} -type f -not -name 'LICENSE*' -delete -o -type d -empty -delete \
 
 # kubeconform installation
+    && case ${TARGETPLATFORM} in \
+      "linux/amd64")   KUBECONFORM_ARCH=linux-amd64   ;; \
+      "linux/arm64")   KUBECONFORM_ARCH=linux-arm64   ;; \
+    esac \
     && ML_THIRD_PARTY_DIR="/third-party/kubeconform" \
     && KUBECONFORM_VERSION=v0.5.0 \
     && mkdir -p ${ML_THIRD_PARTY_DIR} \
-    && wget -P ${ML_THIRD_PARTY_DIR} -q https://github.com/yannh/kubeconform/releases/download/$KUBECONFORM_VERSION/kubeconform-linux-amd64.tar.gz \
-    && tar xf ${ML_THIRD_PARTY_DIR}/kubeconform-linux-amd64.tar.gz --directory ${ML_THIRD_PARTY_DIR} \
+    && wget -P ${ML_THIRD_PARTY_DIR} -q https://github.com/yannh/kubeconform/releases/download/$KUBECONFORM_VERSION/kubeconform-${KUBECONFORM_ARCH}.tar.gz \
+    && tar xf ${ML_THIRD_PARTY_DIR}/kubeconform-${KUBECONFORM_ARCH}.tar.gz --directory ${ML_THIRD_PARTY_DIR} \
     && mv ${ML_THIRD_PARTY_DIR}/kubeconform /usr/local/bin \
-    && rm ${ML_THIRD_PARTY_DIR}/kubeconform-linux-amd64.tar.gz \
+    && rm ${ML_THIRD_PARTY_DIR}/kubeconform-${KUBECONFORM_ARCH}.tar.gz \
     && find ${ML_THIRD_PARTY_DIR} -type f -not -name 'LICENSE*' -delete -o -type d -empty -delete \
 
 # protolint installation
@@ -305,12 +308,14 @@ RUN echo y|sfdx plugins:install sfdx-hardis \
 #     && rm -rf /root/.npm/_cacache
 
 # misspell installation
-    && ML_THIRD_PARTY_DIR="/third-party/misspell" \
-    && mkdir -p ${ML_THIRD_PARTY_DIR} \
-    && curl --retry 10 --retry-all-errors -L -o ${ML_THIRD_PARTY_DIR}/install-misspell.sh https://git.io/misspell \
-    && sh .${ML_THIRD_PARTY_DIR}/install-misspell.sh \
-    && find ${ML_THIRD_PARTY_DIR} -type f -not -name 'LICENSE*' -delete -o -type d -empty -delete \
-    && find /tmp -path '/tmp/tmp.*' -type f -name 'misspell*' -delete -o -type d -empty -delete
+    && if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
+         ML_THIRD_PARTY_DIR="/third-party/misspell" \
+         && mkdir -p ${ML_THIRD_PARTY_DIR} \
+         && curl -L -o ${ML_THIRD_PARTY_DIR}/install-misspell.sh https://git.io/misspell \
+         && sh .${ML_THIRD_PARTY_DIR}/install-misspell.sh \
+         && find ${ML_THIRD_PARTY_DIR} -type f -not -name 'LICENSE*' -delete -o -type d -empty -delete \
+         && find /tmp -path '/tmp/tmp.*' -type f -name 'misspell*' -delete -o -type d -empty -delete; \
+    fi
 
 
 #OTHER__END
