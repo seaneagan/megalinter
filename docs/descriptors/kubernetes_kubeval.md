@@ -119,12 +119,16 @@ Flags:
 
 - Dockerfile commands :
 ```dockerfile
-RUN ML_THIRD_PARTY_DIR="/third-party/kubeval" \
+ARG TARGETPLATFORM
+RUN case ${TARGETPLATFORM} in \
+      "linux/amd64")   KUBEVAL_ARCH=linux-amd64   ;; \
+    esac \
+    && ML_THIRD_PARTY_DIR="/third-party/kubeval" \
     && mkdir -p ${ML_THIRD_PARTY_DIR} \
-    && wget -P ${ML_THIRD_PARTY_DIR} -q https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz \
-    && tar xf ${ML_THIRD_PARTY_DIR}/kubeval-linux-amd64.tar.gz --directory ${ML_THIRD_PARTY_DIR} \
+    && wget -P ${ML_THIRD_PARTY_DIR} -q https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-${KUBEVAL_ARCH}.tar.gz \
+    && tar xf ${ML_THIRD_PARTY_DIR}/kubeval-${KUBEVAL_ARCH}.tar.gz --directory ${ML_THIRD_PARTY_DIR} \
     && mv ${ML_THIRD_PARTY_DIR}/kubeval /usr/local/bin \
-    && rm ${ML_THIRD_PARTY_DIR}/kubeval-linux-amd64.tar.gz \
+    && rm ${ML_THIRD_PARTY_DIR}/kubeval-${KUBEVAL_ARCH}.tar.gz \
     && find ${ML_THIRD_PARTY_DIR} -type f -not -name 'LICENSE*' -delete -o -type d -empty -delete
 
 ```
