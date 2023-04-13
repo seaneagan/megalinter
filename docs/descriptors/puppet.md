@@ -9,8 +9,8 @@ description: puppet-lint is available to analyze PUPPET files in MegaLinter
 
 ## Linters
 
-| Linter                                                                                     | Additional                                                                                                                                                                             |
-|--------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Linter | Additional |
+| ------ | ---------- |
 | [**puppet-lint**](puppet_puppet_lint.md)<br/>[_PUPPET_PUPPET_LINT_](puppet_puppet_lint.md) | [![GitHub stars](https://img.shields.io/github/stars/rodjek/puppet-lint?cacheSeconds=3600)](https://github.com/rodjek/puppet-lint) ![autofix](https://shields.io/badge/-autofix-green) |
 
 ## Linted files
@@ -20,8 +20,8 @@ description: puppet-lint is available to analyze PUPPET files in MegaLinter
 
 ## Configuration in MegaLinter
 
-| Variable                    | Description                   | Default value |
-|-----------------------------|-------------------------------|---------------|
-| PUPPET_FILTER_REGEX_INCLUDE | Custom regex including filter |               |
-| PUPPET_FILTER_REGEX_EXCLUDE | Custom regex excluding filter |               |
+| Variable | Description | Default value |
+| ----------------- | -------------- | -------------- |
+| PUPPET_FILTER_REGEX_INCLUDE | Custom regex including filter |  |
+| PUPPET_FILTER_REGEX_EXCLUDE | Custom regex excluding filter |  |
 

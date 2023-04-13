@@ -9,18 +9,18 @@ description: misspell, cspell, proselint are available to analyze SPELL files in
 
 ## Linters
 
-| Linter                                                                          | Additional                                                                                                                                                                         |
-|---------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [**misspell**](spell_misspell.md)<br/>[_SPELL_MISSPELL_](spell_misspell.md)     | [![GitHub stars](https://img.shields.io/github/stars/client9/misspell?cacheSeconds=3600)](https://github.com/client9/misspell) ![autofix](https://shields.io/badge/-autofix-green) |
-| [**cspell**](spell_cspell.md)<br/>[_SPELL_CSPELL_](spell_cspell.md)             | [![GitHub stars](https://img.shields.io/github/stars/streetsidesoftware/cspell?cacheSeconds=3600)](https://github.com/streetsidesoftware/cspell)                                   |
-| [**proselint**](spell_proselint.md)<br/>[_SPELL_PROSELINT_](spell_proselint.md) | [![GitHub stars](https://img.shields.io/github/stars/amperser/proselint?cacheSeconds=3600)](https://github.com/amperser/proselint)                                                 |
+| Linter | Additional |
+| ------ | ---------- |
+| [**misspell**](spell_misspell.md)<br/>[_SPELL_MISSPELL_](spell_misspell.md) | [![GitHub stars](https://img.shields.io/github/stars/client9/misspell?cacheSeconds=3600)](https://github.com/client9/misspell) ![autofix](https://shields.io/badge/-autofix-green) |
+| [**cspell**](spell_cspell.md)<br/>[_SPELL_CSPELL_](spell_cspell.md) | [![GitHub stars](https://img.shields.io/github/stars/streetsidesoftware/cspell?cacheSeconds=3600)](https://github.com/streetsidesoftware/cspell) |
+| [**proselint**](spell_proselint.md)<br/>[_SPELL_PROSELINT_](spell_proselint.md) | [![GitHub stars](https://img.shields.io/github/stars/amperser/proselint?cacheSeconds=3600)](https://github.com/amperser/proselint) |
 
 ## Linted files
 
 ## Configuration in MegaLinter
 
-| Variable                   | Description                   | Default value |
-|----------------------------|-------------------------------|---------------|
-| SPELL_FILTER_REGEX_INCLUDE | Custom regex including filter |               |
-| SPELL_FILTER_REGEX_EXCLUDE | Custom regex excluding filter |               |
+| Variable | Description | Default value |
+| ----------------- | -------------- | -------------- |
+| SPELL_FILTER_REGEX_INCLUDE | Custom regex including filter |  |
+| SPELL_FILTER_REGEX_EXCLUDE | Custom regex excluding filter |  |
 

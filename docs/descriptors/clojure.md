@@ -9,8 +9,8 @@ description: clj-kondo is available to analyze CLOJURE files in MegaLinter
 
 ## Linters
 
-| Linter                                                                                | Additional                                                                                                                         |
-|---------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|
+| Linter | Additional |
+| ------ | ---------- |
 | [**clj-kondo**](clojure_clj_kondo.md)<br/>[_CLOJURE_CLJ_KONDO_](clojure_clj_kondo.md) | [![GitHub stars](https://img.shields.io/github/stars/borkdude/clj-kondo?cacheSeconds=3600)](https://github.com/borkdude/clj-kondo) |
 
 ## Linted files
@@ -23,8 +23,8 @@ description: clj-kondo is available to analyze CLOJURE files in MegaLinter
 
 ## Configuration in MegaLinter
 
-| Variable                     | Description                   | Default value |
-|------------------------------|-------------------------------|---------------|
-| CLOJURE_FILTER_REGEX_INCLUDE | Custom regex including filter |               |
-| CLOJURE_FILTER_REGEX_EXCLUDE | Custom regex excluding filter |               |
+| Variable | Description | Default value |
+| ----------------- | -------------- | -------------- |
+| CLOJURE_FILTER_REGEX_INCLUDE | Custom regex including filter |  |
+| CLOJURE_FILTER_REGEX_EXCLUDE | Custom regex excluding filter |  |
 
